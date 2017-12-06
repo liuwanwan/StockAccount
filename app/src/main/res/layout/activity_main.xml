@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         toolbar:logo="@mipmap/ic_launcher"
-        toolbar:title="资产评估师"
+        toolbar:title="股票记账"
         toolbar:subtitle="2017.11.21"
         toolbar:contentInsetStart="0dp"
         app:popupTheme="@style/ToolbarPopupTheme"

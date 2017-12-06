@@ -2,23 +2,78 @@ package com.stockaccount.utils;
 
 public class EventUtil
 {
-    private int courseInt;
-    private String chapterInt;
+    private String name,code,todayRate,accumulateRate,num,price,cost,tax,exchange;
 
-	public int getCourseInt()
+	public String getName()
 	{
-		return courseInt;
+		return name;
 	}
-	public String getChapterInt()
+	public String getCode()
 	{
-		return chapterInt;
+		return code;
 	}
-    public void setCourseInt(int i)
+    public void setName(String name)
 	{
-        this.courseInt = i;  
+        this.name = name;  
     }  
-	public void setChapterInt(String j)
+	public void setCode(String code)
 	{
-        this.chapterInt = j;  
+        this.code = code;  
     }  
+	public String getTodayRate()
+	{
+		return todayRate;
+	}
+	public String getAccumulateRate()
+	{
+		return accumulateRate;
+	}
+    public void setTodayRate(String todayRate)
+	{
+        this.todayRate = todayRate;  
+    }  
+	public void setAccumulateRate(String accumulateRate)
+	{
+        this.accumulateRate = accumulateRate;  
+    }  
+	public void setNum(String num)
+	{
+        this.num = num;  
+    }  
+	public String getPrice()
+	{
+		return price;
+	}
+	public void setPrice(String price)
+	{
+        this.price = price;  
+    }  
+	public String getCost()
+	{
+		return cost;
+	}
+	public void setTax(String tax)
+	{
+        this.tax = tax;  
+    }  
+	public String getTax()
+	{
+		return tax;
+	}
+	public void setCost(String cost)
+	{
+        this.cost= cost;  
+    }  
+	public String getNum()
+	{
+		return num;
+	}
+	public void setExchange(String exchange)
+	{
+        this.exchange = exchange;  
+    }  
+	public String getExchange()
+	{
+		return exchange;
+	}
 }
