@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import com.stockaccount.utils.*;
 
 public class StockFragment extends Fragment
 {
@@ -41,7 +42,8 @@ public class StockFragment extends Fragment
 
         //为RecyclerView添加默认动画效果，测试不写也可以
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), stockList));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(1));
+		mRecyclerView.setAdapter(mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), stockList));
 
         return view;
     }
