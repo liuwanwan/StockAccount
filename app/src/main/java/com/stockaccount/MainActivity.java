@@ -1,29 +1,22 @@
 package com.stockaccount;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-import android.support.v7.widget.Toolbar;
-
-import com.stockaccount.fragment.StockFragment;
-import com.stockaccount.utils.EventUtil;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.lang.reflect.Method;
-import java.util.Calendar;
-import java.util.TimeZone;
-import android.support.v7.app.*;
-import android.view.*;
 import android.content.*;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.design.widget.*;
+import android.support.v4.app.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
+import android.view.*;
 import android.widget.*;
+import android.widget.CompoundButton.*;
+import com.stockaccount.fragment.*;
+import com.stockaccount.utils.*;
+import java.lang.reflect.*;
+import java.util.*;
+import org.greenrobot.eventbus.*;
+
+import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -36,6 +29,9 @@ public class MainActivity extends AppCompatActivity
     private String chapterInt = "0";
     private RecyclerView mRecyclerView;
     private StockFragment stockFragment;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
 	{
@@ -201,8 +197,8 @@ public class MainActivity extends AppCompatActivity
 		final EditText etStockCode=(EditText)v.findViewById(R.id.et_stock_code);
 		final EditText etStockNum=(EditText)v.findViewById(R.id.et_stock_num);
 		final EditText etStockCost=(EditText)v.findViewById(R.id.et_stock_cost);
-		EditText etStockTax=(EditText)v.findViewById(R.id.et_stock_tax);
-		EditText etStockExchange=(EditText)v.findViewById(R.id.et_stock_exchange);
+		final EditText etStockTax=(EditText)v.findViewById(R.id.et_stock_tax);
+		final RadioGroup etStockExchange=(RadioGroup)v.findViewById(R.id.rg_exchange);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("买卖股票");
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -210,26 +206,48 @@ public class MainActivity extends AppCompatActivity
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
-					EventUtil eventUtil = new EventUtil();
+					final EventUtil eventUtil = new EventUtil();
+					String numS=etStockNum.getText().toString();
+					String costS=etStockCost.getText().toString();
+					String taxS=etStockTax.getText().toString();
 					String code=etStockCode.getText().toString();
-					if (StockExist(code))
-					{
+
+					int num=0;
+					double cost=0.0,tax=0.0;
+					if (numS != null && numS.length() > 0)
+						num = Integer.parseInt(numS);
+					if (costS != null && costS.length() > 0)
+						cost = Double.parseDouble(costS);
+					if (taxS != null && taxS.length() > 0)
+						tax = Double.parseDouble(taxS);
+					etStockExchange.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+							@Override
+							public void onCheckedChanged(RadioGroup p1, int p2)
+							{
+								int radioButtonId=p1.getCheckedRadioButtonId();
+								RadioButton rb=(RadioButton)findViewById(radioButtonId);
+								String exchange="";
+								exchange = rb.getText().toString();
+								if (exchange != null && exchange.length() > 0)
+									eventUtil.setExchange(exchange);
+							}
+						});
+					if (StockExist(code) && num > 0 && cost > 0 && tax > 0 && tax < 1)
+					{//num属性里已限制为整数,cost属性里已限制为数字
 						eventUtil.setName(getStockName(code));
 						eventUtil.setCode(code);
-					}
-					int num=Integer.valueOf(etStockNum.getText().toString());
-					if (num >= 0)
-					{
 						eventUtil.setNum(num + "");
-					}
-					double cost=Double.valueOf(etStockCost.getText().toString());
-					if (cost > 0.0)
-					{
 						eventUtil.setCost(cost + "");
+						getTodayRate(code, cost, num, tax);
+						getAccumulateRate(code, cost, num, tax);
+						EventBus.getDefault().post(eventUtil);
 					}
-					EventBus.getDefault().post(eventUtil);
-				}
+					else
+					{
+						Toast.makeText(MainActivity.this, "输入有误！", Toast.LENGTH_SHORT).show();
+					}
 
+				}
 			});
 		builder.setNegativeButton("取消", new DialogInterface.OnClickListener(){
 				public void onClick(DialogInterface p1, int p2)
@@ -240,6 +258,16 @@ public class MainActivity extends AppCompatActivity
         builder.show();
 
     }
+	public void getTodayRate(String code, double cost, int num, double tax)
+	{
+		// TODO: Implement this method
+	}
+
+	public void getAccumulateRate(String code, double cost, int num, double tax)
+	{
+		// TODO: Implement this method
+	}
+
 	private String getStockName(String code)
 	{
 		// TODO: Implement this method
