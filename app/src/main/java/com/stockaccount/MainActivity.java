@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
     private void addStock()
 	{
         LayoutInflater inflater = getLayoutInflater();
-        View v = inflater.inflate(R.layout.layout_stock, (ViewGroup) findViewById(R.id.stock_view));
+        View v = inflater.inflate(R.layout.layout_alert_stock, (ViewGroup) findViewById(R.id.stock_view));
 		final EditText etStockCode=(EditText)v.findViewById(R.id.et_stock_code);
 		final EditText etStockNum=(EditText)v.findViewById(R.id.et_stock_num);
 		final EditText etStockCost=(EditText)v.findViewById(R.id.et_stock_cost);
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
 									eventUtil.setExchange(exchange);
 							}
 						});
-					if (StockExist(code) && num > 0 && cost > 0 && tax > 0 && tax < 1)
+					if (StockExist(code) && num > 0 && cost > 0 && tax > 0 && tax < 10)
 					{//num属性里已限制为整数,cost属性里已限制为数字
 						eventUtil.setName(getStockName(code));
 						eventUtil.setCode(code);

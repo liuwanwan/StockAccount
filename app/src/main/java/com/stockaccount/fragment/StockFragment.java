@@ -22,9 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.stockaccount.utils.*;
+import android.support.v4.widget.*;
 
 public class StockFragment extends Fragment
 {
+	private SwipeRefreshLayout mSwiperefresh;
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private ArrayList<ArrayMap> stockList=new ArrayList<>();
@@ -44,9 +46,22 @@ public class StockFragment extends Fragment
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(1));
 		mRecyclerView.setAdapter(mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), stockList));
+		mSwiperefresh = (SwipeRefreshLayout)view.findViewById(R.id.main_swipe_refresh_layout);  
+		mSwiperefresh.setColorSchemeResources(R.color.colorPrimary);  
+		mSwiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {  
+				@Override  
+				public void onRefresh()
+				{  
+					refreshVideoData();  
+				}
 
+			});  
         return view;
     }
+	private void refreshVideoData()
+	{
+		// TODO: Implement this method
+	}  
     // 接收函数一
     @Subscribe
     public void onEvent(EventUtil event)
@@ -61,8 +76,8 @@ public class StockFragment extends Fragment
 
 		newMap.put("name", name);
 		newMap.put("code", code);
-        newMap.put("todayRate",todayRate);
-		newMap.put("accumulateRate",accumulateRate);
+        newMap.put("todayRate", todayRate);
+		newMap.put("accumulateRate", accumulateRate);
 		stockList.add(0, newMap);
 
 		//RecyclerView列表进行UI数据更新
