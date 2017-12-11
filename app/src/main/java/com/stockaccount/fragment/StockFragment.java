@@ -52,13 +52,13 @@ public class StockFragment extends Fragment
 				@Override  
 				public void onRefresh()
 				{  
-					refreshVideoData();  
+					refreshStockData();  
 				}
 
 			});  
         return view;
     }
-	private void refreshVideoData()
+	private void refreshStockData()
 	{
 		// TODO: Implement this method
 	}  
@@ -69,8 +69,8 @@ public class StockFragment extends Fragment
 		//添加模拟数据到第一项
 		String name = event.getName();
 		String code = event.getCode();
-		String todayRate=event.getTodayRate();
-		String accumulateRate=event.getAccumulateRate();
+		double todayRate=event.getTodayRate();
+		double accumulateRate=event.getAccumulateRate();
 		ArrayMap<String, Object> newMap;
 		newMap = new ArrayMap<String, Object>();
 

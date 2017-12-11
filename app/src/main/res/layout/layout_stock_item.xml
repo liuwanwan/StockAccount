@@ -9,7 +9,7 @@
         android:clickable="true"
 		
         android:foreground="?android:attr/selectableItemBackground"
-		app:cardBackgroundColor="#FFE4E1"  
+		app:cardBackgroundColor="#888888"  
 		app:cardCornerRadius="2dp"  
 		app:cardElevation="2dp"  
 		app:cardMaxElevation="6dp"  
@@ -36,6 +36,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
 					android:gravity="center"
+					android:textColor="#FFFFFF"
 					android:text="中原证券" />
 			</LinearLayout>
 			<LinearLayout
@@ -46,7 +47,7 @@
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
-					
+					android:textColor="#000000"
 					android:gravity="center"
 					android:text="股票代码" />
 				<TextView
@@ -54,6 +55,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
 					android:gravity="center"
+					android:textColor="#FFFFFF"
 					android:text="999999"/>
 			</LinearLayout>
 			<LinearLayout
@@ -64,7 +66,7 @@
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
-					
+					android:textColor="#000000"
 					android:gravity="center"
 					android:text="今日收益"/>
 				<TextView
@@ -72,6 +74,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
 					android:gravity="center"
+					android:textColor="#FFFFFF"
 					android:text="2.89%" />
 			</LinearLayout>
 			<LinearLayout
@@ -82,7 +85,7 @@
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
-					
+					android:textColor="#000000"
 					android:gravity="center"
 					android:text="累计收益" />
 				<TextView
@@ -90,6 +93,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="36dp"
 					android:gravity="center"
+					android:textColor="#FFFFFF"
 					android:text="12.86%" />
 			</LinearLayout>
 		</LinearLayout>

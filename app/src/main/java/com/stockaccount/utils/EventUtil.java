@@ -2,8 +2,9 @@ package com.stockaccount.utils;
 
 public class EventUtil
 {
-    private String name,code,todayRate,accumulateRate,num,price,cost,tax,exchange;
-
+    private String name,code,exchange;
+	private double todayRate,accumulateRate,price,cost;
+private int num,tax;
 	public String getName()
 	{
 		return name;
@@ -20,51 +21,51 @@ public class EventUtil
 	{
         this.code = code;  
     }  
-	public String getTodayRate()
+	public double getTodayRate()
 	{
 		return todayRate;
 	}
-	public String getAccumulateRate()
+	public double getAccumulateRate()
 	{
 		return accumulateRate;
 	}
-    public void setTodayRate(String todayRate)
+    public void setTodayRate(double todayRate)
 	{
         this.todayRate = todayRate;  
     }  
-	public void setAccumulateRate(String accumulateRate)
+	public void setAccumulateRate(double accumulateRate)
 	{
         this.accumulateRate = accumulateRate;  
     }  
-	public void setNum(String num)
+	public void setNum(int num)
 	{
         this.num = num;  
     }  
-	public String getPrice()
+	public double getPrice()
 	{
 		return price;
 	}
-	public void setPrice(String price)
+	public void setPrice(double price)
 	{
         this.price = price;  
     }  
-	public String getCost()
+	public double getCost()
 	{
 		return cost;
 	}
-	public void setTax(String tax)
+	public void setTax(int tax)
 	{
         this.tax = tax;  
     }  
-	public String getTax()
+	public int getTax()
 	{
 		return tax;
 	}
-	public void setCost(String cost)
+	public void setCost(double cost)
 	{
         this.cost= cost;  
     }  
-	public String getNum()
+	public int getNum()
 	{
 		return num;
 	}

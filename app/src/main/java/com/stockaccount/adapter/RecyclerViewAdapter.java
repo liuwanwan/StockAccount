@@ -1,18 +1,14 @@
 package com.stockaccount.adapter;
 
-import android.content.Context;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.stockaccount.R;
-
-import java.util.ArrayList;
-import java.util.Map;
+import android.content.*;
+import android.support.v4.util.*;
 import android.support.v7.widget.*;
+import android.view.*;
+import android.widget.*;
+import com.stockaccount.*;
+import java.text.*;
+import java.util.*;
+import android.graphics.*;
 
 /**
  * Created by Administrator on 2017/12/6 0006.
@@ -59,8 +55,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 		{
 			holder.stockName.setText(map.get("name") + "");
 			holder.stockCode.setText(map.get("code") + "");
-			holder.stockTodayRate.setText(map.get("todayRate") + "");
-			holder.stockAccumulateRate.setText(map.get("accumulateRate") + "");
+			double tRate=map.get("todayRate");
+			int tRateColor=Color.WHITE;
+			if(tRate>0){
+				tRateColor=Color.RED;
+			}
+			if(tRate<0){
+				tRateColor=Color.GREEN;
+			}
+			holder.stockTodayRate.setText(new DecimalFormat("#0.00").format(tRate) + "%");
+			holder.stockTodayRate.setTextColor(tRateColor);
+			double tARate=map.get("accumulateRate");
+			int tARateColor=Color.WHITE;
+			if(tARate>0){
+				tARateColor=Color.RED;
+			}
+			if(tARate<0){
+				tARateColor=Color.GREEN;
+			}
+			holder.stockAccumulateRate.setText(new DecimalFormat("#0.00").format(tARate) + "%");
+			holder.stockAccumulateRate.setTextColor(tARateColor);
 			holder.mCardView.setOnClickListener(new View.OnClickListener() {  
                     @Override  
                     public void onClick(View v)

@@ -17,6 +17,11 @@ import java.util.*;
 import org.greenrobot.eventbus.*;
 
 import android.support.v7.widget.Toolbar;
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+import android.support.v4.util.*;
+import java.util.regex.*;
+import android.util.*;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     private String chapterInt = "0";
     private RecyclerView mRecyclerView;
     private StockFragment stockFragment;
-
+    private String rudeInfo="";
 
 
     @Override
@@ -156,9 +161,9 @@ public class MainActivity extends AppCompatActivity
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         String mYear = String.valueOf(c.get(Calendar.YEAR)); // 获取当前年份
-        String  mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
+        String mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
         String mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码
-        String  mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
+        String mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));
         if ("1".equals(mWay))
 		{
             mWay = "天";
@@ -233,14 +238,16 @@ public class MainActivity extends AppCompatActivity
 							}
 						});
 					if (StockExist(code) && num > 0 && cost > 0 && tax > 0 && tax < 10)
-					{//num属性里已限制为整数,cost属性里已限制为数字
+					{//num属性里已限制为整数,cost属性里已限制为数字,tax单位是万分之一
+						queryStocks(code);
 						eventUtil.setName(getStockName(code));
 						eventUtil.setCode(code);
-						eventUtil.setNum(num + "");
-						eventUtil.setCost(cost + "");
-						getTodayRate(code, cost, num, tax);
-						getAccumulateRate(code, cost, num, tax);
+						eventUtil.setNum(num);
+						eventUtil.setCost(cost);
+						eventUtil.setTodayRate(getTodayRate(code, cost, num, tax));
+						eventUtil.setAccumulateRate(getAccumulateRate(code, cost, num, tax));
 						EventBus.getDefault().post(eventUtil);
+
 					}
 					else
 					{
@@ -258,20 +265,134 @@ public class MainActivity extends AppCompatActivity
         builder.show();
 
     }
-	public void getTodayRate(String code, double cost, int num, double tax)
+	public double getTodayRate(String code, double cost, int num, double tax)
 	{
-		// TODO: Implement this method
+		double price=getStockPrice(code);
+		return price / cost - 1;
 	}
 
-	public void getAccumulateRate(String code, double cost, int num, double tax)
+	private double getStockPrice(String code)
 	{
-		// TODO: Implement this method
-	}
+		queryStocks(code);
 
+		String price="0";
+		if (rudeInfo != null && getStockData(rudeInfo) != null)
+		{
+			//Log.v("AAA","P="+getStockData(rudeInfo));
+			price = getStockData(rudeInfo).get("NowPrice");
+		}
+		return Double.parseDouble(price);
+	}
+	private HashMap<String,String> getStockData(String rudeInfo)
+	{
+		HashMap<String, String> map = new HashMap<String, String>();
+		StockInfo myStockInfo = new StockInfo();
+		String myStockInfoAtrr[] = myStockInfo.getStockInfo();
+		if (rudeInfo != null && rudeInfo.length() > 0)
+		{
+			int endId = rudeInfo.lastIndexOf("\"");
+			if (endId <= 12)
+			{
+				Toast.makeText(this, "股票信息不存在！", Toast.LENGTH_SHORT)
+					.show();
+
+				for (int i = 0; i < myStockInfoAtrr.length; i++)
+				{
+					map.put(myStockInfoAtrr[i], "");
+				}
+			}
+			else
+			{
+				String tempString = rudeInfo.substring(12, endId);
+				Pattern p;
+				p = Pattern.compile("([^~]+)\\~");// 鍦ㄨ繖閲岋紝缂栬瘧 鎴愪竴涓鍒欍��
+				Matcher m;
+				m = p.matcher(tempString);// 鑾峰緱鍖归厤
+
+				for (int i = 0;i < myStockInfoAtrr.length && m.find(); i++)
+				{
+					map.put(myStockInfoAtrr[i], m.group(1));
+					Log.v("AAA", "myStockInfoAtrr[" + i + "]=" + myStockInfoAtrr[i] + "--" + m.group(1));
+				}
+			}
+			return map;
+		}
+		return null;
+	}
+	public void queryStocks(String code)
+	{
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String STOCK_EXCGANGE = code.substring(0, 1);
+		String stockUri="";
+		if (STOCK_EXCGANGE.equals("0"))
+			stockUri = "http://qt.gtimg.cn/q=sz" + code;
+		if (STOCK_EXCGANGE.equals("6"))
+			stockUri = "http://qt.gtimg.cn/q=sh" + code;
+		//String url ="http://hq.sinajs.cn/list=" + marketandcode;
+        //http://hq.sinajs.cn/list=sh600000,sh600536
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, stockUri,
+			new Response.Listener<String>() {
+				@Override
+				public void onResponse(String response)
+				{
+
+					rudeInfo = response;
+				}
+			},
+			new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError error)
+				{
+				}
+			});
+
+        queue.add(stringRequest);
+    }
+	public double getAccumulateRate(String code, double cost, int num, double tax)
+	{
+		//if (isSameDay(new Date(), new Date()))
+		//return getTodayRate(code, cost, num, tax);
+		//else
+		{
+			double price=getStockPrice(code);
+			return price / cost - 1;
+		}
+	}
+    public static boolean isSameDay(Date date1, Date date2)
+	{
+		Calendar calDateA = Calendar.getInstance();
+		calDateA.setTime(date1);
+
+		Calendar calDateB = Calendar.getInstance();
+		calDateB.setTime(date2);
+
+		return calDateA.get(Calendar.YEAR) == calDateB.get(Calendar.YEAR)
+			&& calDateA.get(Calendar.MONTH) == calDateB.get(Calendar.MONTH)
+			&& calDateA.get(Calendar.DAY_OF_MONTH) == calDateB
+			.get(Calendar.DAY_OF_MONTH);
+	}
 	private String getStockName(String code)
 	{
-		// TODO: Implement this method
-		return "中原证券";
+		String name="";
+		if (rudeInfo == null)
+		{
+			Log.v("AAA", "oooooop=");
+			//name = getStockData(rudeInfo).get("Name");
+		}
+		if (rudeInfo != null && getStockData(rudeInfo) == null)
+		{
+			Log.v("AAA", "ooLlllllp=");
+			//name = getStockData(rudeInfo).get("Name");
+		}
+		if (rudeInfo != null && getStockData(rudeInfo) != null)
+		{
+			name = getStockData(rudeInfo).get("Name");
+		}
+
+		return name;
 	}
 
 	private boolean StockExist(String code)
