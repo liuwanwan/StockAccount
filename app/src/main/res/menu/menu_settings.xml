@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="?android:attr/selectableItemBackground">
-    <item android:id="@+id/menu_contents"
-        android:title="目录"
-		android:icon="@drawable/course_content"
+    <item android:id="@+id/menu_exchange"
+        android:title="交易"
+		android:icon="@drawable/ic_add_black_24dp"
 		app:showAsAction="ifRoom|withText"/>
 	<item android:id="@+id/menu_settings"
 		android:title="设置"

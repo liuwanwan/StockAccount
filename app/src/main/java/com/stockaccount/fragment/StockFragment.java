@@ -67,6 +67,7 @@ public class StockFragment extends Fragment
     public void onEvent(EventUtil event)
 	{
 		//添加模拟数据到第一项
+		//String name = event.getExchange();//.getName();
 		String name = event.getName();
 		String code = event.getCode();
 		double todayRate=event.getTodayRate();
